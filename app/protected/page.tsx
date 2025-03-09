@@ -1,38 +1,79 @@
-import FetchDataSteps from "@/components/tutorial/fetch-data-steps";
-import { createClient } from "@/utils/supabase/server";
-import { InfoIcon } from "lucide-react";
-import { redirect } from "next/navigation";
+'use client'
 
-export default async function ProtectedPage() {
-  const supabase = await createClient();
+import { useState } from 'react';
+import { createClient } from '@/utils/supabase/client';  // Import the supabase client
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export default function Page() {
+  const [lineId, setLineId] = useState<string>('');
+  const [isReporting, setIsReporting] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
 
-  if (!user) {
-    return redirect("/sign-in");
-  }
+  const handleReport = async () => {
+    if (!lineId) {
+      setError('Line ID is required');
+      return;
+    }
+
+    const lineIdParsed = parseInt(lineId);
+
+    // Ensure the line ID is a valid number
+    if (isNaN(lineIdParsed)) {
+      setError('Invalid Line ID');
+      return;
+    }
+
+    setIsReporting(true);
+    setError('');
+    setMessage('');
+
+    try {
+      const supabase = createClient();  // Ensure supabase client is created correctly
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        setError('You must be logged in to report a line');
+        return;
+      }
+
+      const response = await fetch('/api/report-line', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`, 
+        },
+        body: JSON.stringify({ line_id: lineIdParsed, user_id: session.user.id }), 
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(data.message);
+      } else {
+        setError(data.error || 'Something went wrong');
+      }
+    } catch (error) {
+      setError('Failed to report line');
+    } finally {
+      setIsReporting(false);
+    }
+  };
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
-      <div className="w-full">
-        <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-          <InfoIcon size="16" strokeWidth={2} />
-          This is a protected page that you can only see as an authenticated
-          user
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(user, null, 2)}
-        </pre>
-      </div>
-      <div>
-        <h2 className="font-bold text-2xl mb-4">Next steps</h2>
-        <FetchDataSteps />
-      </div>
+    <div>
+      <h1>Report a Line</h1>
+      <input
+        type="text"
+        placeholder="Enter Line ID"
+        value={lineId}
+        onChange={(e) => setLineId(e.target.value)}
+      />
+      <button onClick={handleReport} disabled={isReporting}>
+        {isReporting ? 'Reporting...' : 'Report Line'}
+      </button>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {message && <p style={{ color: 'green' }}>{message}</p>}
     </div>
   );
 }
