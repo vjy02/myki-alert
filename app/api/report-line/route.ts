@@ -3,21 +3,34 @@ import { NextRequest, NextResponse } from 'next/server';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const apiUrl = `${supabaseUrl}/rest/v1/reported_lines`;
+const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY!; 
+
+async function verifyRecaptcha(token: string) {
+  const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+    method: 'POST',
+    body: new URLSearchParams({
+      secret: recaptchaSecretKey,
+      response: token,
+    }),
+  });
+  const data = await response.json();
+  return data.success;
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader) {
-      return NextResponse.json(
-        { error: 'You must be authenticated to report a line' },
-        { status: 401 }
-      );
-    }
-
-    const { line_id, user_id } = await request.json();
+    const { line_id, user_id, captcha_token } = await request.json();
     if (!line_id) {
       return NextResponse.json(
         { error: 'Line ID is required' },
+        { status: 400 }
+      );
+    }
+    
+    const isCaptchaValid = await verifyRecaptcha(captcha_token);
+    if (!isCaptchaValid) {
+      return NextResponse.json(
+        { error: 'Invalid reCAPTCHA token' },
         { status: 400 }
       );
     }
@@ -28,8 +41,7 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': supabaseAnonKey,            
-        'Authorization': authHeader,           
+        'apikey': supabaseAnonKey,
       },
       body: JSON.stringify([{ line_id, reported_date, user_id }]),
     });
