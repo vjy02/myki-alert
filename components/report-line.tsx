@@ -26,7 +26,8 @@ const ReportLine = ({
   const [stationOptions, setStationOptions] = useState<LineData[]>([]);
   const [loading, setLoading] = useState(true);
   const { executeRecaptcha } = useGoogleReCaptcha();
-  console.log(latitude, longitude);
+  const isLoading = latitude === 0 && longitude === 0;
+
   useEffect(() => {
     async function fetchStations() {
       setLoading(true);
@@ -90,21 +91,34 @@ const ReportLine = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-10">
       <select
         value={lineId}
         onChange={(e) => e.target.value ?? setLineId(e.target.value)}
         disabled={loading || stationOptions.length === 0}
+        className="border border-gray-600 rounded-sm px-6 py-3"
       >
-        <option value="">Select a Line</option>
-        {stationOptions.map((station: LineData, index: number) => (
-          <option key={station.line_id} value={station.line_id}>
-            {station.long_name}
-          </option>
-        ))}
+        {isLoading ? (
+          <option value="">Loading...</option>
+        ) : stationOptions.length === 0 ? (
+          <option value="">No stations near you</option>
+        ) : (
+          <>
+            <option value="">Select a line</option>
+            {stationOptions.map((station: LineData) => (
+              <option key={station.line_id} value={station.line_id}>
+                {station.long_name}
+              </option>
+            ))}
+          </>
+        )}
       </select>
 
-      <button type="submit" disabled={loading}>
+      <button
+        type="submit"
+        disabled={loading || stationOptions.length === 0}
+        className="border border-red-600 px-4 py-2 rounded-md text-red-100 bg-red-600 disabled:opacity-50 disabled:pointer-events-none"
+      >
         {loading ? "Loading..." : "Report Line"}
       </button>
 

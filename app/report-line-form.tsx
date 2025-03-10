@@ -1,42 +1,95 @@
-"use client";
+'use client'
 
-import ReportLine from "@/components/report-line";
+import React, { useState, useEffect } from "react";
 import { useGeolocated } from "react-geolocated";
+import ReportLine from "@/components/report-line";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import { useState, useEffect } from "react";
 
 const ReportLineForm = () => {
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
+  const [isLocationTimeout, setIsLocationTimeout] = useState(false);
+
+  const {
+    coords,
+    isGeolocationAvailable,
+    isGeolocationEnabled,
+    positionError,
+    getPosition,
+  } = useGeolocated({
     positionOptions: {
       enableHighAccuracy: true,
     },
-    userDecisionTimeout: 5000,
+    userDecisionTimeout: 15000,
+    suppressLocationOnMount: false,
+    watchLocationPermissionChange : true,
   });
-
-  const [isLocationTimeout, setIsLocationTimeout] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (!coords) {
-        setIsLocationTimeout(true); 
+        setIsLocationTimeout(true);
       }
-    }, 10000); 
-    return () => clearTimeout(timeout); 
+    }, 10000);
+    return () => clearTimeout(timeout);
   }, [coords]);
+
+  const handleRetryLocation = () => {
+    setIsLocationTimeout(false);
+    getPosition();
+    window.location.reload()
+  };
 
   return (
     <GoogleReCaptchaProvider
       reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
     >
-      {coords && isGeolocationAvailable && isGeolocationEnabled ? (
-        <ReportLine
-          longitude={coords?.longitude ?? 0}
-          latitude={coords?.latitude ?? 0}
-        />
+      {!isGeolocationAvailable ? (
+        <div className="text-center">
+          <h3>Your browser does not support Geolocation.</h3>
+        </div>
+      ) : !isGeolocationEnabled ? (
+        <div className="text-center">
+          <h3>
+            Geolocation is not enabled.
+          </h3>
+          <button
+            onClick={handleRetryLocation}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
+          >
+            Enable Location
+          </button>
+        </div>
+      ) : positionError ? (
+        <div className="text-center">
+          <h3>
+            An error occurred while retrieving your location:{" "}
+            {positionError.message}
+          </h3>
+          <button
+            onClick={handleRetryLocation}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
+          >
+            Enable Location
+            </button>
+        </div>
       ) : isLocationTimeout ? (
-        <h3>Please enable location services to continue or your device might not be compatible.</h3>
+        <div className="text-center">
+          <h3>
+            Unable to retrieve your location. Please ensure location services
+            are enabled and try again.
+          </h3>
+          <button
+            onClick={handleRetryLocation}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
+          >
+            Enable Location
+            </button>
+        </div>
+      ) : coords ? (
+        <ReportLine longitude={coords.longitude} latitude={coords.latitude} />
       ) : (
-        <h3>Loading...</h3>
+        <div className="text-center">
+          <h3>Getting your location data…</h3>
+        </div>
       )}
     </GoogleReCaptchaProvider>
   );
