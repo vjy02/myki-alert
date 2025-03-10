@@ -131,7 +131,7 @@ export default function ReportLine({
         disabled={loading || stationOptions.length === 0}
         className="border border-red-600 px-4 py-2 rounded-md text-red-100 bg-red-600 disabled:opacity-50 disabled:pointer-events-none"
       >
-        {loading ? "Loading..." : "Report Line"}
+        Report Line
       </button>
 
       {statusMessage && <p>{statusMessage}</p>}

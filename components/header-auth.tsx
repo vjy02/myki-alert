@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import logo from "@/public/antiMykiLogo.png";
+import Image from "next/image";
 
 export default async function AuthButton() {
   const supabase = await createClient();
@@ -58,13 +60,16 @@ export default async function AuthButton() {
       </form>
     </div>
   ) : (
-    <div className="flex gap-2">
-      <Button asChild size="sm" variant={"outline"}>
-        <Link href="/sign-in">Sign in</Link>
-      </Button>
-      <Button asChild size="sm" variant={"default"}>
-        <Link href="/sign-up">Sign up</Link>
-      </Button>
+    <div className="flex gap-2 justify-between w-full">
+      <Image src={logo} height="40" width="40" alt="logo"></Image>
+      <div className="gap-4 flex">
+        <Button asChild size="sm" variant={"outline"} disabled className="opacity-50">
+          <Link href="/sign-in">Sign in</Link>
+        </Button>
+        <Button asChild size="sm" variant={"default"} disabled className="opacity-50">
+          <Link href="/sign-up">Sign up</Link>
+        </Button>
+      </div>
     </div>
   );
 }

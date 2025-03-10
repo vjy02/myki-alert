@@ -24,8 +24,8 @@ const TRAIN_LINES_DICT = {
 export default function HeroLatestReport() {
   return (
     <div className="flex flex-col">
-      <div className="w-full flex items-end justify-between mb-4">
-        <h3 className="text-2xl font-semibold">Latest Reports</h3>
+      <div className="w-full flex items-end justify-between mb-6">
+        <h3 className="text-2xl font-bold">Latest Reports</h3>
         <a
           href="https://example.com"
           target="_blank"

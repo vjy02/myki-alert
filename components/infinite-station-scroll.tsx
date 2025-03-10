@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
 import React from "react";
 import StationPill from "./station-pill";
 
 const stationList = [
   {
-    name:   "Flemington Racecourse",
+    name: "Flemington Racecourse",
     towardsCity: true,
     reportedDateTime: new Date("2025-02-20T14:25:00"),
   },
@@ -103,8 +103,8 @@ const stationList = [
 
 export default function InfiniteStationScroll() {
   return (
-    <div className="relative w-full overflow-hidden">
-      <div className="flex animate-scroll-infinite gap-4">
+    <div className="overflow-hidden whitespace-nowrap [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] md:[mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
+      <div className="inline-flex animate-scroll-infinite gap-6">
         {stationList.concat(stationList).map((station, index) => (
           <StationPill
             key={index}
