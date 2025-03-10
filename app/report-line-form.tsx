@@ -5,7 +5,7 @@ import { useGeolocated } from "react-geolocated";
 import ReportLine from "@/components/report-line";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
-const ReportLineForm = () => {
+export default function ReportLineForm () {
   const [isLocationTimeout, setIsLocationTimeout] = useState(false);
 
   const {
@@ -94,5 +94,3 @@ const ReportLineForm = () => {
     </GoogleReCaptchaProvider>
   );
 };
-
-export default ReportLineForm;

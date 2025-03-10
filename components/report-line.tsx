@@ -14,17 +14,18 @@ type LineData = {
   distance: number;
 };
 
-const ReportLine = ({
+export default function ReportLine({
   latitude,
   longitude,
 }: {
   latitude: number;
   longitude: number;
-}) => {
-  const [lineId, setLineId] = useState(undefined);
+}) {
+  const [lineId, setLineId] = useState<number | undefined>(undefined);
   const [statusMessage, setStatusMessage] = useState("");
   const [stationOptions, setStationOptions] = useState<LineData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [towardsCity, setTowardsCity] = useState(false); // State for checkbox
   const { executeRecaptcha } = useGoogleReCaptcha();
   const isLoading = latitude === 0 && longitude === 0;
 
@@ -73,6 +74,7 @@ const ReportLine = ({
         body: JSON.stringify({
           line_id: lineId,
           user_id: session?.user.id ?? "anonymous",
+          towards_city: towardsCity, 
           captcha_token: token,
         }),
       });
@@ -91,12 +93,12 @@ const ReportLine = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-10">
+    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-10 w-[80vw] md:w-96 max-w-[80vw]">
       <select
         value={lineId}
-        onChange={(e) => e.target.value ?? setLineId(e.target.value)}
+        onChange={(e) => setLineId(Number(e.target.value))}
         disabled={loading || stationOptions.length === 0}
-        className="border border-gray-600 rounded-sm px-6 py-3"
+        className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw]"
       >
         {isLoading ? (
           <option value="">Loading...</option>
@@ -106,13 +108,23 @@ const ReportLine = ({
           <>
             <option value="">Select a line</option>
             {stationOptions.map((station: LineData) => (
-              <option key={station.line_id} value={station.line_id}>
+              <option key={station.line_id} value={station.line_id} className="">
                 {station.long_name}
               </option>
             ))}
           </>
         )}
       </select>
+
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={towardsCity}
+          onChange={(e) => setTowardsCity(e.target.checked)}
+          className="form-checkbox"
+        />
+        Heading towards the city
+      </label>
 
       <button
         type="submit"
@@ -125,7 +137,7 @@ const ReportLine = ({
       {statusMessage && <p>{statusMessage}</p>}
     </form>
   );
-};
+}
 
 async function getClosestStationsList({
   latitude,
@@ -154,5 +166,3 @@ async function getClosestStationsList({
     return [];
   }
 }
-
-export default ReportLine;

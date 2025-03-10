@@ -19,7 +19,7 @@ async function verifyRecaptcha(token: string) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { line_id, user_id, captcha_token } = await request.json();
+    const { line_id, user_id, captcha_token, towards_city } = await request.json();
     if (!line_id) {
       return NextResponse.json(
         { error: 'Line ID is required' },
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
         'apikey': supabaseAnonKey,
       },
-      body: JSON.stringify([{ line_id, reported_date, user_id }]),
+      body: JSON.stringify([{ line_id, reported_date, user_id, towards_city }]),
     });
 
     if (!response.ok) {
