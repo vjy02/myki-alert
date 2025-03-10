@@ -1,6 +1,4 @@
 import InfiniteStationScroll from "./infinite-station-scroll";
-import StationList from "./infinite-station-scroll";
-import StationPill from "./station-pill";
 
 const TRAIN_LINES_DICT = {
   Alamein: 1,
@@ -25,9 +23,20 @@ const TRAIN_LINES_DICT = {
 
 export default function HeroLatestReport() {
   return (
-    <div className="flex flex-col gap-6">
-      <h3 className="text-2xl font-semibold">Latest Reports</h3>
-        <InfiniteStationScroll />
+    <div className="flex flex-col">
+      <div className="w-full flex items-end justify-between mb-4">
+        <h3 className="text-2xl font-semibold">Latest Reports</h3>
+        <a
+          href="https://example.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center"
+        >
+          <span className="text-xs md:text-md">Visit Dashboard</span>
+          <i className="fas fa-external-link-alt ml-2 text-xs"></i>
+        </a>
+      </div>
+      <InfiniteStationScroll />
     </div>
   );
 }

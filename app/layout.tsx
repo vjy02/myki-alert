@@ -2,6 +2,7 @@ import HeaderAuth from "@/components/header-auth";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import '@fortawesome/fontawesome-free/css/all.css';
 import Link from "next/link";
 import "./globals.css";
 

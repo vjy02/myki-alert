@@ -5,6 +5,11 @@ import StationPill from "./station-pill";
 
 const stationList = [
   {
+    name:   "Flemington Racecourse",
+    towardsCity: true,
+    reportedDateTime: new Date("2025-02-20T14:25:00"),
+  },
+  {
     name: "Alamein",
     towardsCity: true,
     reportedDateTime: new Date("2025-02-20T14:25:00"),

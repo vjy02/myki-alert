@@ -12,16 +12,19 @@ export default function StationPill({
   reportedDateTime: Date;
 }) {
   return (
-      <div className="flex flex-col items-center justify-center w-48 relative border-gray-400 shadow-md border rounded-xl px-6 py-1">
-        <div className="flex gap-2">
-        <p>{name}</p>
-        {towardsCity ? <p>➡</p> : <p>⬅</p>}
-        <p>City</p>
-        </div>
-        <TimeAgo
-        datetime={reportedDateTime}
-        className="text-xs text-gray-500 self-end"
-        />
+    <div className="flex flex-col items-center justify-center min-w-60 relative border-blue-800 border-2 shadow-md rounded-xl px-8 py-3">
+      <div className="flex gap-1 items-center">
+        <i className="fa-solid fa-train-subway text-blue-800 mr-1"></i>
+        <p className=" whitespace-nowrap">{name}</p>
       </div>
+      <div className="flex gap-1">
+      {towardsCity ? <p>to</p> : <p>from</p>}
+      <p>City</p>
+      </div>
+      <TimeAgo
+        datetime={reportedDateTime}
+        className="text-xs text-gray-500 mt-2"
+      />
+    </div>
   );
 }
