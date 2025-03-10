@@ -5,8 +5,13 @@ import { useGeolocated } from "react-geolocated";
 import ReportLine from "@/components/report-line";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
-export default function ReportLineForm () {
+export default function ReportLineForm() {
   const [isLocationTimeout, setIsLocationTimeout] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true); 
+  }, []);
 
   const {
     coords,
@@ -20,7 +25,7 @@ export default function ReportLineForm () {
     },
     userDecisionTimeout: 15000,
     suppressLocationOnMount: false,
-    watchLocationPermissionChange : true,
+    watchLocationPermissionChange: true,
   });
 
   useEffect(() => {
@@ -35,8 +40,10 @@ export default function ReportLineForm () {
   const handleRetryLocation = () => {
     setIsLocationTimeout(false);
     getPosition();
-    window.location.reload()
+    window.location.reload();
   };
+
+  if (!isMounted) return null; 
 
   return (
     <GoogleReCaptchaProvider
@@ -48,9 +55,7 @@ export default function ReportLineForm () {
         </div>
       ) : !isGeolocationEnabled ? (
         <div className="text-center">
-          <h3>
-            Geolocation is not enabled.
-          </h3>
+          <h3>Geolocation is not enabled.</h3>
           <button
             onClick={handleRetryLocation}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
@@ -69,7 +74,7 @@ export default function ReportLineForm () {
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
           >
             Enable Location
-            </button>
+          </button>
         </div>
       ) : isLocationTimeout ? (
         <div className="text-center">
@@ -82,7 +87,7 @@ export default function ReportLineForm () {
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
           >
             Enable Location
-            </button>
+          </button>
         </div>
       ) : coords ? (
         <ReportLine longitude={coords.longitude} latitude={coords.latitude} />
@@ -93,4 +98,4 @@ export default function ReportLineForm () {
       )}
     </GoogleReCaptchaProvider>
   );
-};
+}

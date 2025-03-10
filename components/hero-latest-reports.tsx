@@ -1,3 +1,4 @@
+import Link from "next/link";
 import InfiniteStationScroll from "./infinite-station-scroll";
 
 const TRAIN_LINES_DICT = {
@@ -26,15 +27,13 @@ export default function HeroLatestReport() {
     <div className="flex flex-col">
       <div className="w-full flex items-end justify-between mb-6">
         <h3 className="text-2xl font-bold">Latest Reports</h3>
-        <a
-          href="https://example.com"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href="/dashboard"
           className="flex items-center"
         >
           <span className="text-xs md:text-md">Visit Dashboard</span>
           <i className="fas fa-external-link-alt ml-2 text-xs"></i>
-        </a>
+        </Link>
       </div>
       <InfiniteStationScroll />
     </div>

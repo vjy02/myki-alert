@@ -61,12 +61,27 @@ export default async function AuthButton() {
     </div>
   ) : (
     <div className="flex gap-2 justify-between w-full">
-      <Image src={logo} height="40" width="40" alt="logo"></Image>
+      <Link href="/">
+        {" "}
+        <Image src={logo} height="40" width="40" alt="logo"></Image>
+      </Link>
       <div className="gap-4 flex">
-        <Button asChild size="sm" variant={"outline"} disabled className="opacity-50">
+        <Button
+          asChild
+          size="sm"
+          variant={"outline"}
+          disabled
+          className="opacity-50"
+        >
           <Link href="/sign-in">Sign in</Link>
         </Button>
-        <Button asChild size="sm" variant={"default"} disabled className="opacity-50">
+        <Button
+          asChild
+          size="sm"
+          variant={"default"}
+          disabled
+          className="opacity-50"
+        >
           <Link href="/sign-up">Sign up</Link>
         </Button>
       </div>
