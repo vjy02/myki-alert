@@ -6,6 +6,7 @@ import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
+import { Button } from "./ui/button";
 
 type LineData = {
   line_id: number;
@@ -31,6 +32,7 @@ export default function ReportLine({
 
   useEffect(() => {
     async function fetchStations() {
+      if (isLoading) return
       setLoading(true);
       try {
         const stations = await getClosestStationsList({ latitude, longitude });
@@ -74,7 +76,7 @@ export default function ReportLine({
         body: JSON.stringify({
           line_id: lineId,
           user_id: session?.user.id ?? "anonymous",
-          towards_city: towardsCity, 
+          towards_city: towardsCity,
           captcha_token: token,
         }),
       });
@@ -93,7 +95,10 @@ export default function ReportLine({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-10 w-[80vw] md:w-96 max-w-[80vw]">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center gap-10 w-[80vw] md:w-96 max-w-[80vw]"
+    >
       <select
         value={lineId}
         onChange={(e) => setLineId(Number(e.target.value))}
@@ -108,7 +113,11 @@ export default function ReportLine({
           <>
             <option value="">Select a line</option>
             {stationOptions.map((station: LineData) => (
-              <option key={station.line_id} value={station.line_id} className="">
+              <option
+                key={station.line_id}
+                value={station.line_id}
+                className=""
+              >
                 {station.long_name}
               </option>
             ))}
@@ -126,13 +135,14 @@ export default function ReportLine({
         Heading towards the city
       </label>
 
-      <button
+      <Button
         type="submit"
         disabled={loading || stationOptions.length === 0}
-        className="border border-red-600 px-4 py-2 rounded-md text-red-100 bg-red-600 disabled:opacity-50 disabled:pointer-events-none"
+        variant="destructive"
+        className="disabled:opacity-50 disabled:pointer-events-none "
       >
-        Report Line
-      </button>
+        Submit Report
+      </Button>
 
       {statusMessage && <p>{statusMessage}</p>}
     </form>

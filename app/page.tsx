@@ -1,7 +1,7 @@
 import Hero from "@/components/hero";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import ReportLineForm from "./report-line-form";
+import ReportLineForm from "./report/report-line-form";
 import HeroLatestReport from "@/components/hero-latest-reports";
 
 export default async function Home() {

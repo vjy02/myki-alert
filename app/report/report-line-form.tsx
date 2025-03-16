@@ -53,16 +53,6 @@ export default function ReportLineForm() {
         <div className="text-center">
           <h3>Your browser does not support Geolocation.</h3>
         </div>
-      ) : !isGeolocationEnabled ? (
-        <div className="text-center">
-          <h3>Geolocation is not enabled.</h3>
-          <button
-            onClick={handleRetryLocation}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
-          >
-            Enable Location
-          </button>
-        </div>
       ) : positionError ? (
         <div className="text-center">
           <h3>
@@ -73,10 +63,10 @@ export default function ReportLineForm() {
             onClick={handleRetryLocation}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
           >
-            Enable Location
+            Retry
           </button>
         </div>
-      ) : isLocationTimeout ? (
+      ) : isLocationTimeout || !isGeolocationEnabled ? (
         <div className="text-center">
           <h3>
             Unable to retrieve your location. Please ensure location services
@@ -86,7 +76,7 @@ export default function ReportLineForm() {
             onClick={handleRetryLocation}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
           >
-            Enable Location
+          Retry
           </button>
         </div>
       ) : coords ? (
