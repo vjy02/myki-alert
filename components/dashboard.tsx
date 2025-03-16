@@ -54,7 +54,7 @@ export default function Dashboard() {
 
   return (
     <div className="max-w-md md:max-w-full md:w-full mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
+      <h2 className="text-2xl font-bold mb-4 md:text-3xl">Dashboard</h2>
       <Tabs value={filterByDirection} onValueChange={setFilterByDirection} className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="city">To City</TabsTrigger>

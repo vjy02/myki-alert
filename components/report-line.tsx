@@ -26,13 +26,11 @@ export default function ReportLine({
   const [statusMessage, setStatusMessage] = useState("");
   const [stationOptions, setStationOptions] = useState<LineData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [towardsCity, setTowardsCity] = useState(false); // State for checkbox
+  const [towardsCity, setTowardsCity] = useState(false); 
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const isLoading = latitude === 0 && longitude === 0;
 
   useEffect(() => {
     async function fetchStations() {
-      if (isLoading) return
       setLoading(true);
       try {
         const stations = await getClosestStationsList({ latitude, longitude });
@@ -94,6 +92,15 @@ export default function ReportLine({
     }
   };
 
+  if (loading){
+    return (
+      <div className="text-center">
+        <i className="fa-solid fa-train-subway fa-bounce"></i>
+        <h3>Finding nearest stations…</h3>
+      </div>
+    )
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -105,9 +112,7 @@ export default function ReportLine({
         disabled={loading || stationOptions.length === 0}
         className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw]"
       >
-        {isLoading ? (
-          <option value="">Loading...</option>
-        ) : stationOptions.length === 0 ? (
+        {stationOptions.length === 0 ? (
           <option value="">No stations near you</option>
         ) : (
           <>
