@@ -40,8 +40,6 @@ export default function InfiniteStationScroll() {
     fetchStations();
   }, []);
 
-  console.log(stations)
-
   return (
     <div className="overflow-hidden whitespace-nowrap [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] md:[mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]">
       <div className="inline-flex animate-scroll-infinite gap-6">

@@ -50,16 +50,16 @@ export default function RootLayout({
                       <Button
                         asChild
                         size="sm"
-                        variant={"destructive"}
+                        variant={"report"}
                       >
-                        <Link href="/report">Report</Link>
+                        <Link href="/report"><i className="fa-solid fa-exclamation-triangle mr-2"></i>Report</Link>
                       </Button>
                       <Button
                         asChild
                         size="sm"
                         variant={"default"}
                       >
-                        <Link href="/dashboard">Dashboard</Link>
+                        <Link href="/dashboard"><i className="fa-solid fa-list mr-2"></i>Dashboard</Link>
                       </Button>
                     </div>
                   </div>

@@ -39,7 +39,6 @@ export default function Dashboard() {
           };
         });
         setStations(updatedStations);
-        console.log(stations)
       } catch (error) {
         console.error("Failed to fetch stations:", error);
       } finally {
