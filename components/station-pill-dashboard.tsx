@@ -3,7 +3,7 @@
 import TimeAgo from "timeago-react";
 
 export default function StationPillDashboard({
-  id,
+  line_id,
   name,
   reportedDateTime,
   onClickFavorite,
@@ -11,7 +11,7 @@ export default function StationPillDashboard({
   totalReports,
   towardsCity,
 }: {
-  id: string;
+  line_id: string;
   name: string;
   reportedDateTime: string;
   onClickFavorite: (id: string) => void;
@@ -57,7 +57,7 @@ export default function StationPillDashboard({
         {/*<p className="text-xs">See Stats</p>*/}
       </div>
       <button
-        onClick={() => onClickFavorite(id)}
+        onClick={() => onClickFavorite(line_id)}
         className="absolute top-2 right-2"
       >
         <i
