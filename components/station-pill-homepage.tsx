@@ -9,7 +9,7 @@ export default function StationPillHomepage({
 }: {
   name: string;
   towardsCity: boolean;
-  reportedDateTime: Date;
+  reportedDateTime: string | null;
 }) {
   return (
     <div className="flex flex-col items-center justify-center min-w-60 relative border-blue-800 border-2 shadow-md rounded-xl px-8 py-3">
@@ -21,10 +21,14 @@ export default function StationPillHomepage({
         {towardsCity ? <p>to</p> : <p>from</p>}
         <p>City</p>
       </div>
-      <TimeAgo
-        datetime={reportedDateTime}
-        className="text-xs text-gray-500 mt-2"
-      />
+      {reportedDateTime ? (
+        <TimeAgo
+          datetime={new Date(reportedDateTime)}
+          className="text-xs text-gray-500 mt-2"
+        />
+      ) : (
+        <p className="text-xs text-gray-500 mt-2">No reports</p>
+      )}
     </div>
   );
 }

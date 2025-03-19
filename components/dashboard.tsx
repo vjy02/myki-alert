@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import StationPillDashboard from "./station-pill-dashboard";
 import { lineIdToName, defaultReportedLines } from "@/lib/stations";
 
-type Station = {
+export type Station = {
   line_id: number;
   towardsCity: boolean;
   reportedDateTime: string | null;
