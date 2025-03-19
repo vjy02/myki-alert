@@ -22,7 +22,7 @@ export default function ReportLine({
   latitude: number;
   longitude: number;
 }) {
-  const [lineId, setLineId] = useState<number | undefined>(undefined);
+  const [lineId, setLineId] = useState<number>(-1);
   const [statusMessage, setStatusMessage] = useState("");
   const [stationOptions, setStationOptions] = useState<LineData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -125,7 +125,7 @@ export default function ReportLine({
               <option value="">No stations near you</option>
             ) : (
               <>
-                <option value="">Select a line</option>
+                <option value="-1">Select a line</option>
                 {stationOptions.map((station: LineData) => (
                   <option
                     key={station.line_id}
@@ -149,12 +149,12 @@ export default function ReportLine({
           </label>
           <Button
             type="submit"
-            disabled={isSubmitting || loading || lineId === undefined}
+            disabled={isSubmitting || loading || lineId === -1}
             variant="destructive"
             className="disabled:opacity-50 disabled:pointer-events-none min-w-36"
           >
             {isSubmitting ?  <i className="fas fa-spinner fa-spin text-4xl text-red-300"></i>
-: "Submit Report"}
+: <><i className="fa-solid fa-bullhorn mr-2"></i>Submit Encounter</>}
           </Button>
           {statusMessage && <p>{statusMessage}</p>}
         </>
