@@ -1,7 +1,7 @@
 "use client";
 
 import { createClient } from "@/utils/supabase/client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
@@ -26,7 +26,9 @@ export default function ReportLine({
   const [statusMessage, setStatusMessage] = useState("");
   const [stationOptions, setStationOptions] = useState<LineData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [towardsCity, setTowardsCity] = useState(false); 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [towardsCity, setTowardsCity] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function ReportLine({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     if (!lineId) {
       setStatusMessage("Please select a Line ID.");
       return;
@@ -89,16 +91,19 @@ export default function ReportLine({
     } catch (error) {
       console.error("Error during submission:", error);
       setStatusMessage("An error occurred during submission.");
+    } finally {
+      setIsSubmitted(true);
+      setIsSubmitting(false);
     }
   };
 
-  if (loading){
+  if (loading) {
     return (
       <div className="text-center">
         <i className="fa-solid fa-train-subway fa-bounce"></i>
         <h3>Finding nearest stations…</h3>
       </div>
-    )
+    );
   }
 
   return (
@@ -106,50 +111,54 @@ export default function ReportLine({
       onSubmit={handleSubmit}
       className="flex flex-col items-center gap-10 w-[80vw] md:w-96 max-w-[80vw]"
     >
-      <select
-        value={lineId}
-        onChange={(e) => setLineId(Number(e.target.value))}
-        disabled={loading || stationOptions.length === 0}
-        className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw]"
-      >
-        {stationOptions.length === 0 ? (
-          <option value="">No stations near you</option>
-        ) : (
-          <>
-            <option value="">Select a line</option>
-            {stationOptions.map((station: LineData) => (
-              <option
-                key={station.line_id}
-                value={station.line_id}
-                className=""
-              >
-                {station.long_name}
-              </option>
-            ))}
-          </>
-        )}
-      </select>
-
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={towardsCity}
-          onChange={(e) => setTowardsCity(e.target.checked)}
-          className="form-checkbox"
-        />
-        Heading towards the city
-      </label>
-
-      <Button
-        type="submit"
-        disabled={loading || stationOptions.length === 0}
-        variant="destructive"
-        className="disabled:opacity-50 disabled:pointer-events-none "
-      >
-        Submit Report
-      </Button>
-
-      {statusMessage && <p>{statusMessage}</p>}
+      {isSubmitted ? (
+        <div>Thanks for submitting a report.</div>
+      ) : (
+        <>
+          <select
+            value={lineId}
+            onChange={(e) => setLineId(Number(e.target.value))}
+            disabled={loading || stationOptions.length === 0}
+            className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw]"
+          >
+            {stationOptions.length === 0 ? (
+              <option value="">No stations near you</option>
+            ) : (
+              <>
+                <option value="">Select a line</option>
+                {stationOptions.map((station: LineData) => (
+                  <option
+                    key={station.line_id}
+                    value={station.line_id}
+                    className=""
+                  >
+                    {station.long_name}
+                  </option>
+                ))}
+              </>
+            )}
+          </select>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={towardsCity}
+              onChange={(e) => setTowardsCity(e.target.checked)}
+              className="form-checkbox"
+            />
+            Heading towards the city
+          </label>
+          <Button
+            type="submit"
+            disabled={isSubmitting || loading || lineId === undefined}
+            variant="destructive"
+            className="disabled:opacity-50 disabled:pointer-events-none min-w-36"
+          >
+            {isSubmitting ?  <i className="fas fa-spinner fa-spin text-4xl text-red-300"></i>
+: "Submit Report"}
+          </Button>
+          {statusMessage && <p>{statusMessage}</p>}
+        </>
+      )}
     </form>
   );
 }
