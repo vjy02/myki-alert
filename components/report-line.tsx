@@ -142,13 +142,15 @@ export default function ReportLine({
               </>
             )}
           </select>
-          <label className="flex items-center gap-2">
-          <input
-  type="checkbox"
-  checked={towardsCity}
-  onChange={(e) => setTowardsCity(e.target.checked)}
-  className="appearance-none w-5 h-5 border-2 border-gray-500 rounded-md checked:bg-blue-500"
-/>
+          <label className="relative flex items-center cursor-pointer">
+  <input
+    type="checkbox"
+    checked={towardsCity}
+    onChange={(e) => setTowardsCity(e.target.checked)}
+    className="appearance-none w-5 h-5 border border-gray-500 rounded-md bg-white dark:bg-gray-800 checked:bg-blue-500 dark:checked:bg-white peer"
+  />
+  {/* Custom checkmark */}
+  <span className="absolute left-1 top-1 hidden peer-checked:block text-white dark:text-black">✔</span>
             Heading towards the city
           </label>
           <Button
