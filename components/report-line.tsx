@@ -142,15 +142,17 @@ export default function ReportLine({
               </>
             )}
           </select>
-          <label className="relative flex items-center cursor-pointer">
-  <input
-    type="checkbox"
-    checked={towardsCity}
-    onChange={(e) => setTowardsCity(e.target.checked)}
-    className="appearance-none w-5 h-5 border border-gray-500 rounded-md bg-white dark:bg-gray-800 checked:bg-blue-500 dark:checked:bg-white peer"
-  />
-  {/* Custom checkmark */}
-  <span className="absolute left-1 top-1 hidden peer-checked:block text-white dark:text-black">✔</span>
+          <label className="relative flex items-center cursor-pointer gap-2">
+            <input
+              type="checkbox"
+              checked={towardsCity}
+              onChange={(e) => setTowardsCity(e.target.checked)}
+              className="appearance-none w-5 h-5 rounded-md border border-gray-600 bg-white dark:bg-gray-800  dark:checked:bg-white peer"
+            />
+            {/* Custom checkmark for iOS dark mode styling noooooo*/}
+            <span className="absolute left-[3px] top-[1px] hidden peer-checked:block text-black dark:text-black">
+              ✔
+            </span>
             Heading towards the city
           </label>
           <Button
