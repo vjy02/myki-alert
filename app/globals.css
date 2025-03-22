@@ -32,8 +32,12 @@
   }
 }
 
-input, button, select, textarea {
+input, select {
   background-color: white !important;
   color: black !important;
   border-color: #ccc !important;
+}
+
+input[type='checkbox'] {
+  background-color: transparent !important;
 }
