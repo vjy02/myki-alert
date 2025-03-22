@@ -110,13 +110,6 @@ export default function Dashboard() {
   );
 }
 
-function ShimmerCard() {
-  return (
-    <div className="w-32 h-12 bg-gray-300 rounded-md animate-pulse"></div>
-  );
-}
-
-
 function StationList({
   stations,
   onClickFavorite,
