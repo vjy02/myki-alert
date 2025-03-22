@@ -15,7 +15,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Inspector Alert",
+  title: "PTV Alert",
   description: "Keep up to date with the latest activities from inspectors.",
   icons: {
     icon: "/logo-192.png"
