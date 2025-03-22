@@ -31,3 +31,9 @@
     --chart-5: 27 87% 67%;
   }
 }
+
+input, button, select, textarea {
+  background-color: white !important;
+  color: black !important;
+  border-color: #ccc !important;
+}
