@@ -57,7 +57,7 @@ export default function ReportLineForm() {
         <div className="text-center">
           <h3>
             An error occurred while retrieving your location. Please ensure location services
-            are enabled and try again.
+            are enabled for your browser and try again.
           </h3>
           <button
             onClick={handleRetryLocation}

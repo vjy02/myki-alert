@@ -119,7 +119,7 @@ export default function ReportLine({
             value={lineId}
             onChange={(e) => setLineId(Number(e.target.value))}
             disabled={loading || stationOptions.length === 0}
-            className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw]"
+            className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw] dark:bg-slate-300"
           >
             {stationOptions.length === 0 ? (
               <option value="">No stations near you</option>
@@ -143,7 +143,7 @@ export default function ReportLine({
               type="checkbox"
               checked={towardsCity}
               onChange={(e) => setTowardsCity(e.target.checked)}
-              className="form-checkbox"
+              className="form-checkbox dark:bg-slate-300"
             />
             Heading towards the city
           </label>

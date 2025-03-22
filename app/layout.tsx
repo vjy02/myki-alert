@@ -18,7 +18,7 @@ export const metadata = {
   title: "Inspector Alert",
   description: "Keep up to date with the latest activities from inspectors.",
   icons: {
-    icon: "/logo.png"
+    icon: "/logo-192.png"
   },
   display: "standalone",
 };
