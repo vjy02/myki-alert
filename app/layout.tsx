@@ -5,7 +5,7 @@ import { ThemeProvider } from "next-themes";
 import "@fortawesome/fontawesome-free/css/all.css";
 import Link from "next/link";
 import "./globals.css";
-import logo from "@/public/antiMykiLogo.png";
+import logo from "@/public/logo.png";
 import { Button } from "@/components/ui/button";
 import { PostHogProvider } from "@/components/PostHogProvider";
 
@@ -17,7 +17,10 @@ export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Inspector Alert",
   description: "Keep up to date with the latest activities from inspectors.",
-  icon: logo,
+  icons: {
+    icon: "/logo.png"
+  },
+  display: "standalone",
 };
 
 const geistSans = Geist({
