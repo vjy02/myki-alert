@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import StationPillDashboard from "./station-pill-dashboard";
 import { lineIdToName, defaultReportedLines } from "@/lib/stations";
+import StationFavorites from "./station-favorites";
 
 export type Station = {
   line_id: number;
@@ -55,18 +56,6 @@ export default function Dashboard() {
           ? station.towardsCity
           : !station.towardsCity
       )
-      .sort((a, b) => {
-        const isAFavA = favoriteStations.includes(String(a.line_id));
-        const isAFavB = favoriteStations.includes(String(b.line_id));
-
-        if (isAFavA && !isAFavB) return -1;
-        if (!isAFavA && isAFavB) return 1;
-
-        return (
-          new Date(b.reportedDateTime ?? 0).getTime() -
-          new Date(a.reportedDateTime ?? 0).getTime()
-        );
-      });
   }, [stations, filterByDirection, favoriteStations]);
 
   const onClickFavorite = (line_id: string) => {
@@ -84,36 +73,49 @@ export default function Dashboard() {
 
   return (
     <div className="max-w-md md:max-w-full md:w-full mx-auto">
-      <h2 className="text-2xl font-bold mb-4 md:text-3xl">Dashboard</h2>
-      <Tabs
-        value={filterByDirection}
-        onValueChange={setFilterByDirection}
-        className="w-full"
-      >
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="city">To City</TabsTrigger>
-          <TabsTrigger value="station">To Station</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="city">
-          <StationList
-            stations={filteredStations}
-            onClickFavorite={onClickFavorite}
-            favoriteStations={favoriteStations}
-          />
-        </TabsContent>
-
-        <TabsContent value="station">
-          <StationList
-            stations={filteredStations}
-            onClickFavorite={onClickFavorite}
-            favoriteStations={favoriteStations}
-          />
-        </TabsContent>
-      </Tabs>
+      {loading ? (
+        <div className="flex flex-col gap-1 justify-center items-center h-40">
+           <i className="fas fa-spinner fa-spin text-xl"></i>
+          <p className="">Collecting latest reports...</p>
+        </div>
+      ) : (
+        <>
+          <StationFavorites onClickFavorite={onClickFavorite} stations={stations} favoriteStations={favoriteStations}/>
+          <h2 className="text-2xl font-bold mb-4 md:text-3xl">Stations</h2>
+          <Tabs value={filterByDirection} onValueChange={setFilterByDirection} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="city">To City</TabsTrigger>
+              <TabsTrigger value="station">From City</TabsTrigger>
+            </TabsList>
+  
+            <TabsContent value="city">
+              <StationList
+                stations={filteredStations}
+                onClickFavorite={onClickFavorite}
+                favoriteStations={favoriteStations}
+              />
+            </TabsContent>
+  
+            <TabsContent value="station">
+              <StationList
+                stations={filteredStations}
+                onClickFavorite={onClickFavorite}
+                favoriteStations={favoriteStations}
+              />
+            </TabsContent>
+          </Tabs>
+        </>
+      )}
     </div>
   );
 }
+
+function ShimmerCard() {
+  return (
+    <div className="w-32 h-12 bg-gray-300 rounded-md animate-pulse"></div>
+  );
+}
+
 
 function StationList({
   stations,
@@ -126,7 +128,9 @@ function StationList({
 }) {
   return (
     <div className="flex flex-wrap gap-4 md:grid md:grid-cols-3 mt-4">
-      {stations.map((station, index) => (
+      {stations.map((station, index) => {
+        if (favoriteStations.includes(String(station.line_id))) return
+        return (
         <StationPillDashboard
           key={String(index) + String(station.line_id) + String(station.towardsCity)}
           onClickFavorite={onClickFavorite}
@@ -134,10 +138,10 @@ function StationList({
           line_id={String(station.line_id)}
           name={lineIdToName[station.line_id]}
           reportedDateTime={String(station.reportedDateTime) ?? "N/A"}
-          isFavorite={favoriteStations.includes(String(station.line_id))}
+          isFavorite={false}
           totalReports={0}
-        />
-      ))}
+        />)
+})}
     </div>
   );
 }

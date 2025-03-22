@@ -112,7 +112,7 @@ export default function ReportLine({
       className="flex flex-col items-center gap-10 w-[80vw] md:w-96 max-w-[80vw]"
     >
       {isSubmitted ? (
-        <div>Thanks for submitting a report.</div>
+        <div className=" text-center">\( • ᗜ • )/ <br/><br/>Thank you for submitting a report.</div>
       ) : (
         <>
           <select
@@ -153,7 +153,7 @@ export default function ReportLine({
             variant="destructive"
             className="disabled:opacity-50 disabled:pointer-events-none min-w-36"
           >
-            {isSubmitting ?  <i className="fas fa-spinner fa-spin text-4xl text-red-300"></i>
+            {isSubmitting ?  <i className="fas fa-spinner fa-spin text-xl text-red-300"></i>
 : <><i className="fa-solid fa-bullhorn mr-2"></i>Submit Encounter</>}
           </Button>
           {statusMessage && <p>{statusMessage}</p>}

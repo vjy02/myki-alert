@@ -17,7 +17,6 @@ export const lineIdToName: Record<string, string> = {
     "16": "Upfield",
     "17": "Werribee",
     "18": "Williamstown",
-    "19": "City Loop",
 };
 
 export const defaultReportedLines = Object.keys(lineIdToName).flatMap((lineId) => [

@@ -27,10 +27,10 @@ export default function StationPillDashboard({
   let statusMessage = "No reports";
 
   let statusColor = "text-green-500";
-  if (hoursSinceReport <= 2) {
+  if (hoursSinceReport <= 1) {
     statusColor = "text-red-500";
     statusMessage = "Alert";
-  } else if (hoursSinceReport <= 4) {
+  } else if (hoursSinceReport <= 3) {
     statusColor = "text-yellow-500";
     statusMessage = "Caution";
   }

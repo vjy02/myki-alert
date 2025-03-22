@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
 
     try {
         const { data, error } = await supabase.rpc('get_nearest_station_lines', {
-            input_latitude: parseFloat("-37.74310021739477"),
-            input_longitude: parseFloat("144.92702962816116")
+            input_latitude: parseFloat("-37.810189480508505"),
+            input_longitude: parseFloat("144.9626364539681")
         });
 
         if (error) {
