@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Inspector Alert",
-    short_name: "Inspector",
+    name: "PTV Alert",
+    short_name: "PTV Alert",
     description: "Keep up to date with the latest activities from inspectors.",
     start_url: "/",
     display: "standalone",
