@@ -123,7 +123,7 @@ export default function ReportLine({
             value={lineId}
             onChange={(e) => setLineId(Number(e.target.value))}
             disabled={loading || stationOptions.length === 0}
-            className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw] dark:bg-slate-100"
+            className="border border-gray-600 rounded-sm px-6 py-3 w-full md:w-96 max-w-[80vw]"
           >
             {stationOptions.length === 0 ? (
               <option value="">No stations near you</option>
@@ -142,17 +142,13 @@ export default function ReportLine({
               </>
             )}
           </select>
-          <label className="relative flex items-center cursor-pointer gap-2">
+          <label className="flex items-center gap-2">
             <input
               type="checkbox"
               checked={towardsCity}
               onChange={(e) => setTowardsCity(e.target.checked)}
-              className="appearance-none w-5 h-5 rounded-md border border-gray-600 bg-white dark:bg-gray-800  dark:checked:bg-white peer"
+              className="form-checkbox dark:bg-slate-300"
             />
-            {/* Custom checkmark for iOS dark mode styling noooooo*/}
-            <span className="absolute left-[3px] top-[1px] hidden peer-checked:block text-black dark:text-black">
-              ✔
-            </span>
             Heading towards the city
           </label>
           <Button
