@@ -112,7 +112,11 @@ export default function ReportLine({
       className="flex flex-col items-center gap-10 w-[80vw] md:w-96 max-w-[80vw]"
     >
       {isSubmitted ? (
-        <div className=" text-center">\( • ᗜ • )/ <br/><br/>Thank you for submitting a report.</div>
+        <div className=" text-center">
+          \( • ᗜ • )/ <br />
+          <br />
+          Thank you for submitting a report.
+        </div>
       ) : (
         <>
           <select
@@ -143,7 +147,7 @@ export default function ReportLine({
               type="checkbox"
               checked={towardsCity}
               onChange={(e) => setTowardsCity(e.target.checked)}
-              className="form-checkbox dark:bg-slate-100 bg-slate-100"
+              className="appearance-none w-5 h-5 border-2 rounded-md dark:bg-white"
             />
             Heading towards the city
           </label>
@@ -153,8 +157,13 @@ export default function ReportLine({
             variant="destructive"
             className="disabled:opacity-50 disabled:pointer-events-none min-w-36"
           >
-            {isSubmitting ?  <i className="fas fa-spinner fa-spin text-xl text-red-300"></i>
-: <><i className="fa-solid fa-bullhorn mr-2"></i>Submit Encounter</>}
+            {isSubmitting ? (
+              <i className="fas fa-spinner fa-spin text-xl text-red-300"></i>
+            ) : (
+              <>
+                <i className="fa-solid fa-bullhorn mr-2"></i>Submit Encounter
+              </>
+            )}
           </Button>
           {statusMessage && <p>{statusMessage}</p>}
         </>
